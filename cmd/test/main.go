@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	logrus.Info("hello world!")
+	logrus.Info("hello go world!")
 }
