@@ -1,4 +1,4 @@
-package websocket
+package websocket_chat
 
 import (
 	"bytes"
@@ -32,18 +32,18 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-// Client is a middleman between the websocket connection and the hub.
+// Client is a middleman between the websocket_chat connection and the hub.
 type Client struct {
 	hub *Hub
 
-	// The websocket connection.
+	// The websocket_chat connection.
 	conn *websocket.Conn
 
 	// Buffered channel of outbound messages.
 	send chan []byte
 }
 
-// readPump pumps messages from the websocket connection to the hub.
+// readPump pumps messages from the websocket_chat connection to the hub.
 //
 // The application runs readPump in a per-connection goroutine. The application
 // ensures that there is at most one reader on a connection by executing all
@@ -70,7 +70,7 @@ func (c *Client) readPump() {
 	}
 }
 
-// writePump pumps messages from the hub to the websocket connection.
+// writePump pumps messages from the hub to the websocket_chat connection.
 //
 // A goroutine running writePump is started for each connection. The
 // application ensures that there is at most one writer to a connection by
@@ -97,7 +97,7 @@ func (c *Client) writePump() {
 			}
 			w.Write(message)
 
-			// Add queued chat messages to the current websocket message.
+			// Add queued chat messages to the current websocket_chat message.
 			n := len(c.send)
 			for i := 0; i < n; i++ {
 				w.Write(newline)
@@ -116,7 +116,7 @@ func (c *Client) writePump() {
 	}
 }
 
-// serveWs handles websocket requests from the peer.
+// serveWs handles websocket_chat requests from the peer.
 func ServeWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
