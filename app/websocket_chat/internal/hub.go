@@ -1,4 +1,4 @@
-package websocket_chat
+package internal
 
 type Hub struct {
 	// Registered clients.

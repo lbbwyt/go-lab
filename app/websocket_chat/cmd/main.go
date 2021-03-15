@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	log "github.com/sirupsen/logrus"
-	"go-lab/app/websocket_chat"
+	"go-lab/app/websocket_chat/internal"
 	"net/http"
 )
 
@@ -24,11 +24,11 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	flag.Parse()
-	hub := websocket_chat.NewHub()
+	hub := internal.NewHub()
 	go hub.Run()
 	http.HandleFunc("/", serveHome)
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		websocket_chat.ServeWs(hub, w, r)
+		internal.ServeWs(hub, w, r)
 	})
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
