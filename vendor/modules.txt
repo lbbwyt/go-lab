@@ -12,6 +12,9 @@ github.com/go-redis/redis/v8/internal/pool
 github.com/go-redis/redis/v8/internal/proto
 github.com/go-redis/redis/v8/internal/rand
 github.com/go-redis/redis/v8/internal/util
+# github.com/google/wire v0.5.0
+## explicit
+github.com/google/wire
 # github.com/gorilla/websocket v1.4.2
 ## explicit
 github.com/gorilla/websocket
