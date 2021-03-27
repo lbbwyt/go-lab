@@ -3,6 +3,7 @@ module go-lab
 go 1.14
 
 require (
+	github.com/gin-gonic/gin v1.6.3
 	github.com/go-redis/redis/v8 v8.7.1
 	github.com/google/wire v0.5.0
 	github.com/gorilla/websocket v1.4.2
