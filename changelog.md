@@ -4,3 +4,4 @@
 2021-03-15: go generate结合stringer 工具定义错误码
 2021-03-16: 更新go版本为1.16， 添加wire依赖注入使用和context使用
 2021-03-21: event bus
+2021-03-23: add gin limiter middleware
