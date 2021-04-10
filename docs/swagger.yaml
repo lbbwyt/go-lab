@@ -1,0 +1,31 @@
+basePath: /
+host: test-localhost.cn
+info:
+  contact:
+    email: lbbwyt@126.com
+    name: lbbwyt
+  description: gin_swagger 接口文档.
+  license: {}
+  termsOfService: test-gin-swagger
+  title: gin_swagger API
+  version: "2.0"
+paths:
+  /api/all_constants:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有常量
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: map[string]interface{}
+          schema:
+            type: string
+      summary: 获取所有常量
+      tags:
+      - constant
+schemes:
+- http
+- https
+swagger: "2.0"

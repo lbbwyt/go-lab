@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package protobuf;
+option go_package = "../protobuf";
+
+
+
+//资源类型，
+enum ResourceType {
+  App = 0; //应用
+}
