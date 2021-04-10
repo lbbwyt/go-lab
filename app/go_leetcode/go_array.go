@@ -41,3 +41,23 @@ func findComninationSun(nums []int, target int, index int, c []int, res *[][]int
 	}
 
 }
+
+//快排的递归实现
+func QuickSort(arr []int) []int {
+	if len(arr) <= 1 {
+		return arr
+	}
+	splitData := arr[0]
+	hight, low, mid := make([]int, 0), make([]int, 0), make([]int, 0)
+	for i := 1; i < len(arr); i++ {
+		if arr[i] < splitData {
+			low = append(low, splitData)
+		} else if arr[i] > splitData {
+			hight = append(hight, arr[i])
+		} else {
+			mid = append(mid, arr[i])
+		}
+	}
+	low, hight = QuickSort(low), QuickSort(hight)
+	return append(append(low, mid...), hight...)
+}
