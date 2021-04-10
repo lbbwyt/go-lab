@@ -1,0 +1,45 @@
+{
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "gin_swagger 接口文档.",
+        "title": "gin_swagger API",
+        "termsOfService": "test-gin-swagger",
+        "contact": {
+            "name": "lbbwyt",
+            "email": "lbbwyt@126.com"
+        },
+        "license": {},
+        "version": "2.0"
+    },
+    "host": "test-localhost.cn",
+    "basePath": "/",
+    "paths": {
+        "/api/all_constants": {
+            "get": {
+                "description": "获取所有常量",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "constant"
+                ],
+                "summary": "获取所有常量",
+                "responses": {
+                    "200": {
+                        "description": "map[string]interface{}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

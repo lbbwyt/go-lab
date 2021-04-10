@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package protobuf;
+option go_package = "../protobuf";
+
+import  "enum.proto";
+
+// webhook 实体
+message Webhook {
+  ResourceType resource_type = 1;
+  string url = 2;
+}
