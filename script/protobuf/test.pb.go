@@ -7,7 +7,11 @@
 package protobuf
 
 import (
+	context "context"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -81,6 +85,91 @@ func (x *Webhook) GetUrl() string {
 	return ""
 }
 
+type GetWebhooksReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetWebhooksReq) Reset() {
+	*x = GetWebhooksReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_test_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetWebhooksReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWebhooksReq) ProtoMessage() {}
+
+func (x *GetWebhooksReq) ProtoReflect() protoreflect.Message {
+	mi := &file_test_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWebhooksReq.ProtoReflect.Descriptor instead.
+func (*GetWebhooksReq) Descriptor() ([]byte, []int) {
+	return file_test_proto_rawDescGZIP(), []int{1}
+}
+
+type GetWebhooksRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Data []*Webhook `protobuf:"bytes,1,rep,name=data,proto3" json:"data,omitempty"`
+}
+
+func (x *GetWebhooksRes) Reset() {
+	*x = GetWebhooksRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_test_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetWebhooksRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetWebhooksRes) ProtoMessage() {}
+
+func (x *GetWebhooksRes) ProtoReflect() protoreflect.Message {
+	mi := &file_test_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWebhooksRes.ProtoReflect.Descriptor instead.
+func (*GetWebhooksRes) Descriptor() ([]byte, []int) {
+	return file_test_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetWebhooksRes) GetData() []*Webhook {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
 var File_test_proto protoreflect.FileDescriptor
 
 var file_test_proto_rawDesc = []byte{
@@ -91,9 +180,19 @@ var file_test_proto_rawDesc = []byte{
 	0x20, 0x01, 0x28, 0x0e, 0x32, 0x16, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
 	0x52, 0x65, 0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x54, 0x79, 0x70, 0x65, 0x52, 0x0c, 0x72, 0x65,
 	0x73, 0x6f, 0x75, 0x72, 0x63, 0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x72,
-	0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x75, 0x72, 0x6c, 0x42, 0x0d, 0x5a, 0x0b,
-	0x2e, 0x2e, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x75, 0x72, 0x6c, 0x22, 0x10, 0x0a, 0x0e,
+	0x47, 0x65, 0x74, 0x57, 0x65, 0x62, 0x68, 0x6f, 0x6f, 0x6b, 0x73, 0x52, 0x65, 0x71, 0x22, 0x37,
+	0x0a, 0x0e, 0x47, 0x65, 0x74, 0x57, 0x65, 0x62, 0x68, 0x6f, 0x6f, 0x6b, 0x73, 0x52, 0x65, 0x73,
+	0x12, 0x25, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x11,
+	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x57, 0x65, 0x62, 0x68, 0x6f, 0x6f,
+	0x6b, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x32, 0x52, 0x0a, 0x0b, 0x54, 0x65, 0x73, 0x74, 0x53,
+	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x43, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x57, 0x65, 0x62,
+	0x68, 0x6f, 0x6f, 0x6b, 0x73, 0x12, 0x18, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
+	0x2e, 0x47, 0x65, 0x74, 0x57, 0x65, 0x62, 0x68, 0x6f, 0x6f, 0x6b, 0x73, 0x52, 0x65, 0x71, 0x1a,
+	0x18, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x47, 0x65, 0x74, 0x57, 0x65,
+	0x62, 0x68, 0x6f, 0x6f, 0x6b, 0x73, 0x52, 0x65, 0x73, 0x22, 0x00, 0x42, 0x0d, 0x5a, 0x0b, 0x2e,
+	0x2e, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -108,18 +207,23 @@ func file_test_proto_rawDescGZIP() []byte {
 	return file_test_proto_rawDescData
 }
 
-var file_test_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_test_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_test_proto_goTypes = []interface{}{
-	(*Webhook)(nil),   // 0: protobuf.Webhook
-	(ResourceType)(0), // 1: protobuf.ResourceType
+	(*Webhook)(nil),        // 0: protobuf.Webhook
+	(*GetWebhooksReq)(nil), // 1: protobuf.GetWebhooksReq
+	(*GetWebhooksRes)(nil), // 2: protobuf.GetWebhooksRes
+	(ResourceType)(0),      // 3: protobuf.ResourceType
 }
 var file_test_proto_depIdxs = []int32{
-	1, // 0: protobuf.Webhook.resource_type:type_name -> protobuf.ResourceType
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 0: protobuf.Webhook.resource_type:type_name -> protobuf.ResourceType
+	0, // 1: protobuf.GetWebhooksRes.data:type_name -> protobuf.Webhook
+	1, // 2: protobuf.TestService.GetWebhooks:input_type -> protobuf.GetWebhooksReq
+	2, // 3: protobuf.TestService.GetWebhooks:output_type -> protobuf.GetWebhooksRes
+	3, // [3:4] is the sub-list for method output_type
+	2, // [2:3] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_test_proto_init() }
@@ -141,6 +245,30 @@ func file_test_proto_init() {
 				return nil
 			}
 		}
+		file_test_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetWebhooksReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_test_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetWebhooksRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -148,9 +276,9 @@ func file_test_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_test_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
-			NumServices:   0,
+			NumServices:   1,
 		},
 		GoTypes:           file_test_proto_goTypes,
 		DependencyIndexes: file_test_proto_depIdxs,
@@ -160,4 +288,84 @@ func file_test_proto_init() {
 	file_test_proto_rawDesc = nil
 	file_test_proto_goTypes = nil
 	file_test_proto_depIdxs = nil
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConnInterface
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion6
+
+// TestServiceClient is the client API for TestService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type TestServiceClient interface {
+	GetWebhooks(ctx context.Context, in *GetWebhooksReq, opts ...grpc.CallOption) (*GetWebhooksRes, error)
+}
+
+type testServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewTestServiceClient(cc grpc.ClientConnInterface) TestServiceClient {
+	return &testServiceClient{cc}
+}
+
+func (c *testServiceClient) GetWebhooks(ctx context.Context, in *GetWebhooksReq, opts ...grpc.CallOption) (*GetWebhooksRes, error) {
+	out := new(GetWebhooksRes)
+	err := c.cc.Invoke(ctx, "/protobuf.TestService/GetWebhooks", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// TestServiceServer is the server API for TestService service.
+type TestServiceServer interface {
+	GetWebhooks(context.Context, *GetWebhooksReq) (*GetWebhooksRes, error)
+}
+
+// UnimplementedTestServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedTestServiceServer struct {
+}
+
+func (*UnimplementedTestServiceServer) GetWebhooks(context.Context, *GetWebhooksReq) (*GetWebhooksRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWebhooks not implemented")
+}
+
+func RegisterTestServiceServer(s *grpc.Server, srv TestServiceServer) {
+	s.RegisterService(&_TestService_serviceDesc, srv)
+}
+
+func _TestService_GetWebhooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWebhooksReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestServiceServer).GetWebhooks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/protobuf.TestService/GetWebhooks",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestServiceServer).GetWebhooks(ctx, req.(*GetWebhooksReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _TestService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "protobuf.TestService",
+	HandlerType: (*TestServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetWebhooks",
+			Handler:    _TestService_GetWebhooks_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "test.proto",
 }

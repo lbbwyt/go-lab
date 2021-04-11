@@ -6,6 +6,8 @@ require (
 	github.com/ClickHouse/clickhouse-go v1.4.3
 	github.com/Shopify/sarama v1.28.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/casbin/casbin/v2 v2.26.0
+	github.com/casbin/mongodb-adapter/v3 v3.2.0
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-openapi/spec v0.20.3 // indirect
@@ -15,6 +17,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/google/wire v0.5.0
 	github.com/gorilla/websocket v1.4.2
+	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/jmoiron/sqlx v1.3.3
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
@@ -30,7 +33,8 @@ require (
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
 	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
 	golang.org/x/text v0.3.6 // indirect
-	golang.org/x/tools v0.1.0 // indirect
+	google.golang.org/genproto v0.0.0-20210406143921-e86de6bf7a46
+	google.golang.org/grpc v1.37.0
 	google.golang.org/protobuf v1.26.0
 	gopkg.in/yaml.v2 v2.4.0
 )

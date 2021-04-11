@@ -39,10 +39,12 @@ type Config struct {
 	MongoDbConfigs struct {
 		DB MongoDb `yaml:"test_db"`
 	} `yaml:"mongodb"`
-	WebServer  Web        `yaml:"web"`
-	Kafka      Kafka      `yaml:"kafka"`
-	Logger     Logger     `yaml:"logger"`
-	ClickHouse ClickHouse `yaml:"click_house"`
+	WebServer     Web        `yaml:"web"`
+	Kafka         Kafka      `yaml:"kafka"`
+	Logger        Logger     `yaml:"logger"`
+	ClickHouse    ClickHouse `yaml:"click_house"`
+	RpcServer     Web        `yaml:"rpc"`
+	RpcHttpServer Web        `yaml:"rpc_gw"`
 }
 
 var GConfig *Config
