@@ -5,12 +5,18 @@ mongodb:
     password:
     rs: rs0
     db:
-
 web:
   port: 80
-
+rpc:
+  port: 9403
 kafka:
   addrs:
     - localhost:9092
   version: 2.6.0
   group:
+click_house:
+  addrs:
+    - localhost:9000
+  user:
+  password:
+  db:

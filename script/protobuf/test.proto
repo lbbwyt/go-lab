@@ -10,3 +10,14 @@ message Webhook {
   ResourceType resource_type = 1;
   string url = 2;
 }
+
+message GetWebhooksReq{
+}
+message GetWebhooksRes{
+  repeated Webhook data =1;
+}
+
+
+service TestService {
+  rpc GetWebhooks (GetWebhooksReq) returns (GetWebhooksRes) {}
+}

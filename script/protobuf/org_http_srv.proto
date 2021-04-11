@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package protobuf;
+option go_package = "../protobuf";
+
+import "google/api/annotations.proto";
+
+
+message GetOrgsReq{}
+message GetOrgsRes{}
+
+service OrgService {
+  //获取组织树:部门>组>团队
+  rpc GetOrgs (GetOrgsReq) returns (GetOrgsRes) {
+    option (google.api.http) = {
+      post: "/org/GetOrgs"
+      body: "*"
+    };
+  }
+}
+
+//    grpc-gateway是protoc的一个插件。它读取gRPC服务定义，并生成一个反向代理服务器，
+//   将RESTful JSON API转换为gRPC。此服务器是根据gRPC定义中的自定义选项生成的。
