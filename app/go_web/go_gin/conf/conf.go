@@ -28,13 +28,21 @@ type Logger struct {
 	ReportCaller bool `yaml:"report_caller"`
 }
 
+type ClickHouse struct {
+	Addrs       []string `yaml:"addrs"`
+	User        string   `yaml:"user"`
+	Password    string   `yaml:"password"`
+	StatisticDb string   `yaml:"statistic_db"`
+}
+
 type Config struct {
 	MongoDbConfigs struct {
 		DB MongoDb `yaml:"test_db"`
 	} `yaml:"mongodb"`
-	WebServer Web    `yaml:"web"`
-	Kafka     Kafka  `yaml:"kafka"`
-	Logger    Logger `yaml:"logger"`
+	WebServer  Web        `yaml:"web"`
+	Kafka      Kafka      `yaml:"kafka"`
+	Logger     Logger     `yaml:"logger"`
+	ClickHouse ClickHouse `yaml:"click_house"`
 }
 
 var GConfig *Config

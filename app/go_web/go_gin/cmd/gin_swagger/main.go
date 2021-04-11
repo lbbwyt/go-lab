@@ -4,6 +4,7 @@ import (
 	"flag"
 	log "github.com/sirupsen/logrus"
 	"go-lab/app/go_web/go_gin/conf"
+	"go-lab/app/go_web/go_gin/global_web_var"
 	"go-lab/app/go_web/go_gin/web_router"
 	"net/http"
 	"os"
@@ -43,6 +44,9 @@ func main() {
 
 	// 初始化log框架
 	InitLog(conf.GConfig.Logger.Debug, conf.GConfig.Logger.ReportCaller)
+
+	//初始化依赖组件
+	global_web_var.Init()
 
 	// start web server
 	router, err := web_router.InitRouter()

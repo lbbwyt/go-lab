@@ -14,3 +14,11 @@ kafka:
     - localhost:9092
   version: 2.6.0
   group:
+
+
+click_house:
+  addrs:
+    - localhost:9000
+  user:
+  password:
+  db:
