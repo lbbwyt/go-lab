@@ -16,7 +16,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&cfgPath, "c", "/Users/mac/libaobao/github/private/go-lab/app/go_web/go_gin/etc/config.yaml", "")
+	flag.StringVar(&cfgPath, "c", "./etc/config.yaml", "")
 	flag.Parse()
 }
 
@@ -34,7 +34,6 @@ func init() {
 // @contact.email lbbwyt@126.com
 func main() {
 	log.Info("[main] starting project")
-
 	// 解析配置文件
 	err := conf.Init(cfgPath)
 	if err != nil {

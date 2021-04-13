@@ -6,7 +6,7 @@ mongodb:
     rs: rs0
     db:
 web:
-  port: 80
+  port: 8888
 rpc:
   port: 9403
 kafka:
