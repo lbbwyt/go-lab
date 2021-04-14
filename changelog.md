@@ -12,3 +12,4 @@
 2021-04-11: add mongodb and clickhouse db   
 2021-04-11: add grpc gateway  
 2021-04-13: docker 容器化gin_web项目  
+2021-04-13: 使用命令的方式将gin_web 推送到本地私服，并部署到k8s中  

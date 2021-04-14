@@ -34,3 +34,22 @@ CMD ["/dist/gin_web"]
 #docker build . -t gin_swagger
 #docker run -p 8888:8888 gin_swagger
 #docker exec -it e8f46558a9ab /bin/sh
+
+#给镜像打标签
+#docker tag localhost:5000/gin_swagger
+#将镜像推到本地私服localhost:5000
+#docker push localhost:5000/gin_swagger
+
+
+#1:创建 Deployment
+#使用 kubectl create 命令创建管理 Pod 的 Deployment。该 Pod 根据提供的 Docker 镜像运行 Container。
+#kubectl create deployment gin-web --image=localhost:5000/gin_swagger
+
+#kubectl get deployments
+#kubectl get pods
+
+#2:创建 Service
+#默认情况下，Pod 只能通过 Kubernetes 集群中的内部 IP 地址访问。 要使得容器可以从 Kubernetes虚拟网络的外部访问，你必须将 Pod 暴露为 Kubernetes Service。
+# kubectl expose deployment gin-web --type=LoadBalancer --port=8888
+
+
