@@ -1,0 +1,18 @@
+
+1:通过 YAML 文件创建一个 Deployment：
+kubectl apply -f ./gin-web-deployment.yaml
+
+显示 Deployment 相关信息：
+kubectl describe depolyment gin-web-bak
+
+列出 Deployment 创建的 Pods：
+get pods -l app=gin-web-bak
+
+
+2:通过 YAML 文件创建一个 service：
+kubectl apply -f ./gin-web-service.yaml
+
+查看service
+kubectl get svc
+
+
