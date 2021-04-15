@@ -53,3 +53,7 @@ CMD ["/dist/gin_web"]
 # kubectl expose deployment gin-web --type=LoadBalancer --port=8888
 
 
+# 导出gin-web 创建的yaml
+# kubectl get deployment gin-web -o yaml
+
+
