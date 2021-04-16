@@ -5,6 +5,7 @@
 2021-03-16: 更新go版本为1.16， 添加wire依赖注入使用和context使用  
 2021-03-21: event bus  
 2021-03-23: add gin limiter middleware  
+###2021年4月
 2021-04-01: add kafka pubsub     
 2021-04-02: add serialization  
 2021-04-05: add gin-swagger  
@@ -13,3 +14,4 @@
 2021-04-11: add grpc gateway  
 2021-04-13: docker 容器化gin_web项目  
 2021-04-13: 使用命令的方式将gin_web 推送到本地私服，并部署到k8s中  
+2021-04-15: k8s二次开发（客户端封装）
