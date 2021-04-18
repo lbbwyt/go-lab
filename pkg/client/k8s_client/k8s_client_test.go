@@ -4,20 +4,13 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"go-lab/model/k8s"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"path/filepath"
 	"testing"
 	"time"
 )
-
-func getLocalConfig() string {
-	var kubeconfig string
-	if home := homeDir(); home != "" {
-		kubeconfig = filepath.Join(home, ".kube", "config")
-	}
-	return kubeconfig
-}
 
 func TestGetClientSet(t *testing.T) {
 	var kubeconfig *string
@@ -65,4 +58,75 @@ func TestK8sClient_GetPod(t *testing.T) {
 		panic(err)
 	}
 	fmt.Println(fmt.Sprintf("%v", pod))
+}
+
+func TestK8sClient_CreateDeployment(t *testing.T) {
+	c, err := NewK8sClient("")
+	if err != nil {
+		panic(err)
+	}
+	labels := map[string]string{
+		"app": "gin-web-test",
+	}
+	deployment := k8s.KubernetesDeployment{
+		Name:                 "gin-web-test",
+		Labels:               labels,
+		Namespace:            "",
+		Replicas:             1,
+		RevisionHistoryLimit: 3,
+		MatchLabels:          labels,
+		ImageName:            "gin-web-test",
+		Image:                "localhost:5000/gin_swagger",
+		ImagePullPolicy:      "",
+		RestartPolicy:        "",
+	}
+	err = c.CreateDeployment("", deployment.Build())
+	if err != nil {
+		panic(err)
+	}
+}
+
+func TestK8sClient_CreateKubeService(t *testing.T) {
+	c, err := NewK8sClient("")
+	if err != nil {
+		panic(err)
+	}
+	labels := map[string]string{
+		"app": "gin-web-test",
+	}
+
+	Selector := map[string]string{
+		"app": "gin-web-test",
+	}
+
+	service := k8s.KubernetesService{
+		Name:       "gin-web-test",
+		Labels:     labels,
+		Namespace:  "",
+		Port:       8001,
+		TargetPort: 8888,
+		Protocol:   "",
+		Type:       "",
+		Selector:   Selector,
+	}
+	err = c.CreateKubeService("", service.Build())
+	if err != nil {
+		panic(err)
+	}
+
+}
+
+func TestK8sClient_DeleteKubeService(t *testing.T) {
+	c, err := NewK8sClient("")
+	if err != nil {
+		panic(err)
+	}
+	err = c.DeleteKubeService("", "nginx", "")
+	if err != nil {
+		panic(err)
+	}
+	err = c.DeleteDeployment("", "nignx-deployment", "")
+	if err != nil {
+		panic(err)
+	}
 }

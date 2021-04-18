@@ -42,7 +42,10 @@ func (c *K8sClient) UpdateDeployment(namespace string, d *appsv1.Deployment) err
 //删除deployment
 func (c *K8sClient) DeleteDeployment(namespace, name, delPropagation string) error {
 	deploymentsClient := c.GetDeploymentClient(namespace)
-	deletePolicy := metav1.DeletionPropagation(delPropagation)
+	deletePolicy := metav1.DeletePropagationForeground
+	if delPropagation != "" {
+		deletePolicy = metav1.DeletionPropagation(delPropagation)
+	}
 	if err := deploymentsClient.Delete(context.TODO(), name, metav1.DeleteOptions{
 		PropagationPolicy: &deletePolicy,
 	}); err != nil {

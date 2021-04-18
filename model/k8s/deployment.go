@@ -19,9 +19,15 @@ type KubernetesDeployment struct {
 	MatchLabels          map[string]string `json:"match_labels"`           // 匹配标签
 
 	//containers
+	ImageName       string              `json:"image_name"`
 	Image           string              `json:"image"`             // 容器使用的镜像地址
 	ImagePullPolicy apiv1.PullPolicy    `json:"image_pull_policy"` // 每次Pod启动拉取镜像策略，三个选择 Always、Never、IfNotPresent
 	RestartPolicy   apiv1.RestartPolicy `json:"restart_policy"`
+}
+
+func (k *KubernetesDeployment) BindImageName(name string) *KubernetesDeployment {
+	k.ImageName = name
+	return k
 }
 
 func (k *KubernetesDeployment) BindName(name string) *KubernetesDeployment {
@@ -30,6 +36,9 @@ func (k *KubernetesDeployment) BindName(name string) *KubernetesDeployment {
 }
 
 func (k *KubernetesDeployment) BindNamespace(namespace string) *KubernetesDeployment {
+	if namespace == "" {
+		namespace = apiv1.NamespaceDefault
+	}
 	k.Namespace = namespace
 	return k
 }
@@ -106,8 +115,28 @@ func (k *KubernetesDeployment) Build() *appsv1.Deployment {
 				Spec: apiv1.PodSpec{
 					Containers: []apiv1.Container{
 						{
-							Image:           k.Image,
-							ImagePullPolicy: k.ImagePullPolicy,
+							Name:                     k.ImageName,
+							Image:                    k.Image,
+							Command:                  nil,
+							Args:                     nil,
+							WorkingDir:               "",
+							Ports:                    nil,
+							EnvFrom:                  nil,
+							Env:                      nil,
+							Resources:                apiv1.ResourceRequirements{},
+							VolumeMounts:             nil,
+							VolumeDevices:            nil,
+							LivenessProbe:            nil,
+							ReadinessProbe:           nil,
+							StartupProbe:             nil,
+							Lifecycle:                nil,
+							TerminationMessagePath:   "",
+							TerminationMessagePolicy: "",
+							ImagePullPolicy:          k.ImagePullPolicy,
+							SecurityContext:          nil,
+							Stdin:                    false,
+							StdinOnce:                false,
+							TTY:                      false,
 						},
 					},
 					RestartPolicy: k.RestartPolicy,

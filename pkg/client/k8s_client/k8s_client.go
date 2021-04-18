@@ -7,6 +7,7 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"os"
+	"path/filepath"
 )
 
 //kubernetes api 封装
@@ -29,6 +30,9 @@ func (c *K8sClient) GetPod(namespace, podName string) (*v1.Pod, error) {
 }
 
 func GetClientSet(configPath string) (*kubernetes.Clientset, error) {
+	if configPath == "" {
+		configPath = getLocalConfig()
+	}
 	// uses the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", configPath)
 	if err != nil {
@@ -47,4 +51,12 @@ func homeDir() string {
 		return h
 	}
 	return os.Getenv("USERPROFILE") // windows
+}
+
+func getLocalConfig() string {
+	var kubeconfig string
+	if home := homeDir(); home != "" {
+		kubeconfig = filepath.Join(home, ".kube", "config")
+	}
+	return kubeconfig
 }
