@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-//适配器模式
+//适配器模式， 目前支持本地缓存和redis缓存
 type Cache interface {
 	Put(key string, value interface{}, expiration time.Duration) error
 	Get(key string) (interface{}, bool, error)
