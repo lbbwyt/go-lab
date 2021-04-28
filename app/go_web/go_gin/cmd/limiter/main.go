@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"go-lab/app/go_web/go_gin/middleware"
-	limiter2 "go-lab/pkg/utils/limiter"
+	limiter2 "go-lab/pkg/limiter"
 	"time"
 )
 
