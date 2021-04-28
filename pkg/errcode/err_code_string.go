@@ -5,7 +5,7 @@ package errcode
 import "strconv"
 
 func _() {
-	// An "invalid array index" compiler error signifies that the constant values have changed.
+	// An "invalid array_utils index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[ERR_CODE_OK-0]

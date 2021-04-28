@@ -3,7 +3,7 @@ package middleware
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"go-lab/pkg/utils/limiter"
+	"go-lab/pkg/limiter"
 	"time"
 )
 
