@@ -79,6 +79,9 @@ github.com/dubbogo/gost/path/filepath
 github.com/dubbogo/gost/runtime
 github.com/dubbogo/gost/sync
 github.com/dubbogo/gost/time
+# github.com/dullgiulio/pingo v0.0.0-20151111190101-8b1949e35b5a
+## explicit
+github.com/dullgiulio/pingo
 # github.com/eapache/go-resiliency v1.2.0
 github.com/eapache/go-resiliency/breaker
 # github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21
