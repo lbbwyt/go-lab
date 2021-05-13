@@ -8,6 +8,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.26.0
 	github.com/casbin/mongodb-adapter/v3 v3.2.0
+	github.com/dullgiulio/pingo v0.0.0-20151111190101-8b1949e35b5a
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-openapi/spec v0.20.3 // indirect
