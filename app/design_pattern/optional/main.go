@@ -4,6 +4,13 @@ import "fmt"
 
 //函数式选项模式
 
+//Option模式的优缺点
+//优点
+//支持传递多个参数，并且在参数个数、类型发生变化时保持兼容性
+//任意顺序传递参数
+//支持默认值
+//方便拓展
+
 type Message struct {
 	id   int
 	name string
