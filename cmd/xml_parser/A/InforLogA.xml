@@ -1,0 +1,21 @@
+<Exception>
+    <ExceptionRecord ModuleName="wpscloudsvr.exe" ExceptionCode="0xc0000005" ExceptionDescription="EXCEPTION_ACCESS_VIOLATION" ExceptionAddress="0x000000005f9e132e" ExceptionModuleName="C:\Users\Administrator\AppData\Local\Kingsoft\WPS Office\11.1.0.10577\office6\Qt5WebKit.dll" ExceptionInstruction="8b 46 68 85 c0 75 04 32 " ExceptionEspReturnAddress="0xffffffff" ExceptionEspReturnModuleName=""/>
+    <AdditionalInfomation Guid="{27938B72-9B5B-4BF1-A7AB-EA59BCC2DAE5}" DistSrc="00020.00002666" WithIndirectlyReferencedMemory="0" QingId="475458556" CallFrom="1" DumpType="" ParentProcName="Unknown" ParentProcId="" TargetProcCmd="60710a6567402036361a7454595e5e2c4a4c4a25322e401e003649762240566f0e5d53585e6f0e2d2b21465f52436c12696b180b20275b21241a08036d0519036c03000c0504192b23205c5351016c32494b5b2829345631373417573b511513621d47494150292b302259514159532d19174b302733461d2734565f795542472d40554a46523730"/>
+    <Processor Architecture="PROCESSOR_ARCHITECTURE_INTEL" Level="Intel Pentium Pro or Pentium II" NumberOfProcessors="4"/>
+    <OperatingSystem MajorVersion="6" MinorVersion="1" BuildNumber="7601" CSDVersion="Service Pack 1" OSLanguage="Chinese (PRC)"/>
+    <Memory MemoryLoad="77 %" TotalPhys="3998 MB" AvailPhys="883 MB" TotalPageFile="7994 MB" AvailPageFile="4543 MB" TotalVirtual="2047 MB" AvailVirtual="1922 MB"/>
+    <ProcessMemory PrivateBytes="134 MB" VirtualBytes="651 MB" VirtualBytesPeak="692 MB" WorkingSet="181 MB" WorkingSetPrivate="114 MB" WorkingSetPeak="215 MB" GDIObjectCount="65" UserObjectCount="370" HandleCount="1150"/>
+    <ProMemErrorcode PrivateBytes="0x0" VirtualBytes="0x0" VirtualBytesPeak="0x0" WorkingSet="0x0" WorkingSetPrivate="0x0" WorkingSetPeak="0x0" GDIObjectCount="0x0" UserObjectCount="0x0" HandleCount="0x0"/>
+    <DeviceInfo StartMode="Raster" Drivers="" Description="" VendorId="0" DeviceId="0" initFailInfo="" TdrInfo="mainTdrCnt=0, animTdrCnt=0"/>
+    <DEPInfo SysOpenDEPMode="DEPPolicyOptIn" WpsOpenDEPMode=""/>
+    <Installation InstallTime="2021-05-26 09:01:10" InstallType="upgrade"/>
+    <Modules>
+        <Module FullPath="wpscloudsvr.exe" BaseAddress="1" Size="0x001ac000" TimeStamp="05/26/2021 00:56:30" FileVersion="11.1.0.10577" ProductVersion="11.1.0.10577" Signature="Zhuhai Kingsoft Office Software Co., Ltd."/>
+        <Module FullPath="wpscloudsvr.exe" BaseAddress="2" Size="0x001ac000" TimeStamp="05/26/2021 00:56:30" FileVersion="11.1.0.10577" ProductVersion="11.1.0.10577" Signature="Zhuhai Kingsoft Office Software Co., Ltd."/>
+        <Module FullPath="C:\Windows\SysWOW64\ntdll.dll" BaseAddress="0x77790000" Size="0x00180000" TimeStamp="10/28/2019 01:17:54" FileVersion="6.1.7601.24524" ProductVersion="6.1.7601.24524" Signature="Microsoft Windows"/>
+    </Modules>
+    <Processes>
+        <Process Cmd="60710a6567402036361a7454595e5e2c4a4c4a25322e401e003649762240566f0e5d53585e6f0e2d2b21465f52436c12696b180b20275b21241a08036d0519036c03000c0504192b23205c5351016c32494b5b2829345631373417573b511513621d47494150292b302259514159532d19174b302733461d2734565f795542472d40554a46523730" GDIObjectCount="65" HandleCount="1150" Name="wpscloudsvr.exe" PID="7740" ParentId="1504" PrivateBytes="134 MB" ProcCreateTime="2021-06-16 01:05:56" ProcRunTime="0:0:41" ProcRunning="1" ProcRunningErrCode="0x0" UserObjectCount="370" VirtualBytes="651 MB" VirtualBytesPeak="692 MB" WorkingSet="181 MB" WorkingSetPeak="215 MB" WorkingSetPrivate="114 MB"/>
+        <Process Cmd="01086c6c415637371907515d5d5959364d4a593029336e0331367d5337556b7f2d5151556e782c2a22355a56406b67156a187722202851271d77081c721a071d7302050e056f2a22232f5655026b5b264b594b2c22345f32243417573b51171e325b540405047174656b4159500a09760d0018692339427f73740e0b77020f136f5151555e55372b287b0410195a5f214c545d79313141212d294c563042455a2f42" GDIObjectCount="12" HandleCount="296" Name="kcrashdumper.exe" PID="4132" ParentId="7740" PrivateBytes="8 MB" ProcCreateTime="2021-06-16 01:06:28" ProcRunTime="0:0:9" ProcRunning="1" ProcRunningErrCode="0x0" UserObjectCount="19" VirtualBytes="125 MB" VirtualBytesPeak="166 MB" WorkingSet="21 MB" WorkingSetPeak="21 MB" WorkingSetPrivate="6 MB"/>
+    </Processes>
+</Exception>
