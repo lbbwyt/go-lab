@@ -235,6 +235,9 @@ github.com/jmoiron/sqlx/reflectx
 github.com/josharian/intern
 # github.com/json-iterator/go v1.1.10
 github.com/json-iterator/go
+# github.com/juju/ratelimit v1.0.1
+## explicit
+github.com/juju/ratelimit
 # github.com/klauspost/compress v1.11.7
 github.com/klauspost/compress/fse
 github.com/klauspost/compress/huff0
