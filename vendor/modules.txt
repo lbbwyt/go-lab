@@ -294,6 +294,10 @@ github.com/pkg/errors
 github.com/pmezard/go-difflib/difflib
 # github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475
 github.com/rcrowley/go-metrics
+# github.com/reugn/async v0.0.0-20200819063434-15e5b3951cd7
+## explicit
+github.com/reugn/async
+github.com/reugn/async/internal
 # github.com/richardlehane/mscfb v1.0.3
 github.com/richardlehane/mscfb
 # github.com/richardlehane/msoleps v1.0.1

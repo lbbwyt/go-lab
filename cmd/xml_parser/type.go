@@ -5,9 +5,19 @@ import "encoding/xml"
 type Exception struct {
 	XMLName xml.Name `xml:"Exception"`
 
-	ExceptionRecord []Record `xml:"ExceptionRecord"`
+	ExceptionRecord      []Record         `xml:"ExceptionRecord"`
+	AdditionalInfomation []AdditionalInfo `xml:"AdditionalInfomation"`
 
 	Module ModuleType `xml:"Modules"'`
+}
+
+type AdditionalInfo struct {
+	TargetProcCmd string `xml:"TargetProcCmd,attr"`
+}
+
+func (e *Exception) Reset() {
+	e.ExceptionRecord = nil
+	e.Module = ModuleType{}
 }
 
 type ExceptionRecord struct {
@@ -15,8 +25,8 @@ type ExceptionRecord struct {
 }
 
 type Record struct {
-	ModuleName          string `xml:"ModuleName,attr"`
-	ExceptionModuleName string `xml:"ExceptionModuleName,attr"`
+	ModuleName          string `xml:"ExceptionModuleName,attr"`
+	ExceptionModuleName string `xml:"ExceptionEspReturnModuleName,attr"`
 }
 
 type ModuleType struct {
@@ -24,6 +34,8 @@ type ModuleType struct {
 }
 
 type Module struct {
+	DumpId         string
+	TargetProcCmd  string
 	FullPath       string `xml:"FullPath,attr"`
 	BaseAddress    string `xml:"BaseAddress,attr"`
 	Size           string `xml:"Size,attr"`

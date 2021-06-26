@@ -27,6 +27,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/marusama/cyclicbarrier v1.1.0
 	github.com/opentrx/mysql v1.0.0-pre
+	github.com/reugn/async v0.0.0-20200819063434-15e5b3951cd7
 	github.com/rs/xid v1.3.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0

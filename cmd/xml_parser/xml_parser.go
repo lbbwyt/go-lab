@@ -11,7 +11,6 @@ import (
 
 type KXmlParser struct {
 	ExceptionPool *sync.Pool
-	lock          sync.Mutex
 	fileName      string
 }
 
@@ -20,7 +19,6 @@ func NewKXmlParser(fileName string) *KXmlParser {
 		ExceptionPool: &sync.Pool{New: func() interface{} {
 			return &Exception{}
 		}},
-		lock:     sync.Mutex{},
 		fileName: fileName,
 	}
 }

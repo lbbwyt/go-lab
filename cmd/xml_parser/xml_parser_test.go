@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"go-lab/pkg/utils/file_utils"
-	"os"
 	"strings"
 	"testing"
 )
@@ -20,14 +18,4 @@ func TestKXmlParser_OpenFile(t *testing.T) {
 	last = strings.Trim(last, "/")
 	fmt.Println(last)
 
-}
-
-func TestKXmlParser_OpenFile2(t *testing.T) {
-	dir, _ := os.Getwd()
-	fmt.Println(dir)
-	res := make([]string, 0)
-	file_utils.GetAllFileFullPath(dir, ".xml", res)
-	for _, v := range res {
-		fmt.Println(v)
-	}
 }

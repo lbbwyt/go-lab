@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	excelize "github.com/360EntSecGroup-Skylar/excelize/v2"
 	log "github.com/sirupsen/logrus"
 	"os"
@@ -29,16 +30,16 @@ func main() {
 	//清空文件并自动写入表头
 	CleanExcel()
 
-	//并发的形式追加内容
 	res := GetAllFileFullPath(dir, ".xml")
-	wg := new(sync.WaitGroup)
+	modules := make([]Module, 0)
+
 	for _, v := range res {
-		wg.Add(1)
-		go func(v string, group *sync.WaitGroup) {
-			parserXml(group, v)
-		}(v, wg)
+		modules = append(modules, GetExceptionFromPath(v)...)
 	}
-	wg.Wait()
+
+	log.Info(fmt.Sprintf("共解析记录条数 :%d", len(modules)))
+
+	PersistData(modules)
 }
 
 func CleanExcel() {
@@ -56,7 +57,7 @@ func CleanExcel() {
 	}
 
 	//将新加modules写进流式写入器
-	row := make([]interface{}, 0, 8)
+	row := make([]interface{}, 0, 9)
 	row = append(row, "DumpId")
 	row = append(row, "FullPath")
 	row = append(row, "BaseAddress")
@@ -65,6 +66,7 @@ func CleanExcel() {
 	row = append(row, "ProductVersion")
 	row = append(row, "Size")
 	row = append(row, "TimeStamp")
+	row = append(row, "TargetProcCmd")
 	cell, _ := excelize.CoordinatesToCellName(1, 1) //决定写入的位置
 	if err := streamWriter.SetRow(cell, row); err != nil {
 		log.WithError(err).Error("SetRow err")
@@ -84,20 +86,13 @@ func CleanExcel() {
 
 }
 
-func parserXml(wg *sync.WaitGroup, xmlName string) {
-	defer wg.Done()
-	log.Infof("解析文件：%s ", xmlName)
-
-	exception := xmlParser.ExceptionPool.Get().(*Exception)
-	defer xmlParser.ExceptionPool.Put(exception)
+func GetExceptionFromPath(xmlName string) []Module {
+	exception := new(Exception)
+	//将解析文件的内容追加到指定excel、
 	xmlParser.OpenFile(xmlName, exception)
 
-	//将解析文件的内容追加到指定excel、
-	xmlParser.lock.Lock()
-	defer xmlParser.lock.Unlock()
-
 	if exception.ExceptionRecord == nil || len(exception.ExceptionRecord) == 0 {
-		return
+		return nil
 	}
 
 	er := exception.ExceptionRecord[0]
@@ -107,18 +102,27 @@ func parserXml(wg *sync.WaitGroup, xmlName string) {
 		moduleName = er.ExceptionModuleName
 	}
 	if moduleName == "" {
-		return
+		return nil
 	}
 	if len(exception.Module.ModuleType) == 0 {
-		return
+		return nil
 	}
 
 	modules := make([]Module, 0)
 	for _, v := range exception.Module.ModuleType {
 		if v.FullPath == moduleName {
+
+			//解析dunpId
+			v.TargetProcCmd = exception.AdditionalInfomation[0].TargetProcCmd
+			v.DumpId = getDumpId(xmlName)
 			modules = append(modules, v)
 		}
 	}
+
+	return modules
+}
+
+func PersistData(modules []Module) {
 
 	//批量写入modules
 	file, err := excelize.OpenFile(xmlParser.fileName)
@@ -151,14 +155,11 @@ func parserXml(wg *sync.WaitGroup, xmlName string) {
 		}
 	}
 
-	//解析dunpId
-	var dumpId = getDumpId(xmlName)
-
 	//将新加modules写进流式写入器
 	for rowID := 0; rowID < len(modules); rowID++ {
 		m := modules[rowID]
-		row := make([]interface{}, 0, 8)
-		row = append(row, dumpId)
+		row := make([]interface{}, 0, 9)
+		row = append(row, m.DumpId)
 		row = append(row, m.FullPath)
 		row = append(row, m.BaseAddress)
 		row = append(row, m.Signature)
@@ -166,7 +167,13 @@ func parserXml(wg *sync.WaitGroup, xmlName string) {
 		row = append(row, m.ProductVersion)
 		row = append(row, m.Size)
 		row = append(row, m.TimeStamp)
+		row = append(row, m)
 		cell, _ := excelize.CoordinatesToCellName(1, rowID+len(rows)+1) //决定写入的位置
+
+		if rowID == 3 {
+			fmt.Println(fmt.Sprintf("cell : %s", cell))
+		}
+
 		if err := streamWriter.SetRow(cell, row); err != nil {
 			log.WithError(err).Error("SetRow err")
 			panic(err)
@@ -197,6 +204,9 @@ func GetAllFileFullPath(curFullPath string, suffix string) []string {
 	var res = make([]string, 0)
 	filepath.Walk(curFullPath, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(path, suffix) {
+			if strings.Contains(path, "21993004") {
+				log.Infof("解析文件：%s ", path)
+			}
 			res = append(res, path)
 		}
 		return nil
