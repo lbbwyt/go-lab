@@ -10,6 +10,7 @@ require (
 	github.com/casbin/casbin/v2 v2.26.0
 	github.com/casbin/mongodb-adapter/v3 v3.2.0
 	github.com/dullgiulio/pingo v0.0.0-20151111190101-8b1949e35b5a
+	github.com/eapache/channels v1.1.0
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-openapi/spec v0.20.3 // indirect
@@ -38,6 +39,7 @@ require (
 	github.com/ugorji/go v1.2.5 // indirect
 	github.com/vmihailenco/msgpack/v4 v4.3.12
 	go.mongodb.org/mongo-driver v1.5.1
+	go.uber.org/atomic v1.6.0
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
 	google.golang.org/genproto v0.0.0-20210406143921-e86de6bf7a46

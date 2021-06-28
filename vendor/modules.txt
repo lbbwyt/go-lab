@@ -85,6 +85,9 @@ github.com/dubbogo/gost/time
 # github.com/dullgiulio/pingo v0.0.0-20151111190101-8b1949e35b5a
 ## explicit
 github.com/dullgiulio/pingo
+# github.com/eapache/channels v1.1.0
+## explicit
+github.com/eapache/channels
 # github.com/eapache/go-resiliency v1.2.0
 github.com/eapache/go-resiliency/breaker
 # github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21
@@ -423,6 +426,7 @@ go.opentelemetry.io/otel/metric/registry
 # go.opentelemetry.io/otel/trace v0.18.0
 go.opentelemetry.io/otel/trace
 # go.uber.org/atomic v1.6.0
+## explicit
 go.uber.org/atomic
 # go.uber.org/multierr v1.5.0
 go.uber.org/multierr
