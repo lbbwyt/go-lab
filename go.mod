@@ -9,8 +9,10 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.26.0
 	github.com/casbin/mongodb-adapter/v3 v3.2.0
+	github.com/dpaks/goworkers v1.8.0
 	github.com/dullgiulio/pingo v0.0.0-20151111190101-8b1949e35b5a
 	github.com/eapache/channels v1.1.0
+	github.com/fatih/pool v3.0.0+incompatible
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-gonic/gin v1.7.1
 	github.com/go-openapi/spec v0.20.3 // indirect
@@ -22,6 +24,7 @@ require (
 	github.com/google/wire v0.5.0
 	github.com/gorilla/websocket v1.4.2
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
+	github.com/ivpusic/grpool v1.0.0
 	github.com/jmoiron/sqlx v1.3.3
 	github.com/juju/ratelimit v1.0.1
 	github.com/leodido/go-urn v1.2.1 // indirect
@@ -37,6 +40,7 @@ require (
 	github.com/swaggo/swag v1.7.0
 	github.com/transaction-wg/seata-golang v0.2.1-alpha
 	github.com/ugorji/go v1.2.5 // indirect
+	github.com/valyala/bytebufferpool v1.0.0
 	github.com/vmihailenco/msgpack/v4 v4.3.12
 	go.mongodb.org/mongo-driver v1.5.1
 	go.uber.org/atomic v1.6.0
