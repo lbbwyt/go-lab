@@ -9,6 +9,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.26.0
 	github.com/casbin/mongodb-adapter/v3 v3.2.0
+	github.com/deliveryhero/pipeline v0.3.1
 	github.com/dpaks/goworkers v1.8.0
 	github.com/dullgiulio/pingo v0.0.0-20151111190101-8b1949e35b5a
 	github.com/eapache/channels v1.1.0
@@ -24,7 +25,6 @@ require (
 	github.com/google/wire v0.5.0
 	github.com/gorilla/websocket v1.4.2
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
-	github.com/ivpusic/grpool v1.0.0
 	github.com/jmoiron/sqlx v1.3.3
 	github.com/juju/ratelimit v1.0.1
 	github.com/leodido/go-urn v1.2.1 // indirect
@@ -46,6 +46,7 @@ require (
 	go.uber.org/atomic v1.6.0
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
+	golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
 	google.golang.org/genproto v0.0.0-20210406143921-e86de6bf7a46
 	google.golang.org/grpc v1.37.0
 	google.golang.org/protobuf v1.26.0

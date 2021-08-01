@@ -72,8 +72,16 @@ github.com/cespare/xxhash/v2
 github.com/cloudflare/golz4
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
+# github.com/deliveryhero/pipeline v0.3.1
+## explicit
+github.com/deliveryhero/pipeline
+github.com/deliveryhero/pipeline/example/processors
+github.com/deliveryhero/pipeline/semaphore
 # github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f
 github.com/dgryski/go-rendezvous
+# github.com/dpaks/goworkers v1.8.0
+## explicit
+github.com/dpaks/goworkers
 # github.com/dubbogo/gost v1.10.1
 github.com/dubbogo/gost/bytes
 github.com/dubbogo/gost/context
@@ -94,6 +102,9 @@ github.com/eapache/go-resiliency/breaker
 github.com/eapache/go-xerial-snappy
 # github.com/eapache/queue v1.1.0
 github.com/eapache/queue
+# github.com/fatih/pool v3.0.0+incompatible
+## explicit
+github.com/fatih/pool
 # github.com/gin-contrib/pprof v1.3.0
 ## explicit
 github.com/gin-contrib/pprof
@@ -356,6 +367,9 @@ github.com/transaction-wg/seata-golang/pkg/util/sql
 ## explicit
 # github.com/ugorji/go/codec v1.2.5
 github.com/ugorji/go/codec
+# github.com/valyala/bytebufferpool v1.0.0
+## explicit
+github.com/valyala/bytebufferpool
 # github.com/vmihailenco/msgpack/v4 v4.3.12
 ## explicit
 github.com/vmihailenco/msgpack/v4
@@ -508,6 +522,7 @@ golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 golang.org/x/text/width
 # golang.org/x/time v0.0.0-20210220033141-f8bda1e9f3ba
+## explicit
 golang.org/x/time/rate
 # golang.org/x/tools v0.1.0
 golang.org/x/tools/go/ast/astutil
