@@ -9,6 +9,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/casbin/casbin/v2 v2.26.0
 	github.com/casbin/mongodb-adapter/v3 v3.2.0
+	github.com/creack/pty v1.1.9
 	github.com/deliveryhero/pipeline v0.3.1
 	github.com/dpaks/goworkers v1.8.0
 	github.com/dullgiulio/pingo v0.0.0-20151111190101-8b1949e35b5a
@@ -20,6 +21,7 @@ require (
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-playground/validator/v10 v10.5.0
 	github.com/go-redis/redis/v8 v8.7.1
+	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.2.0
 	github.com/google/wire v0.5.0
@@ -27,11 +29,15 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/jmoiron/sqlx v1.3.3
 	github.com/juju/ratelimit v1.0.1
+	github.com/knz/go-libedit v1.10.1
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/marusama/cyclicbarrier v1.1.0
+	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/opentrx/mysql v1.0.0-pre
+	github.com/peterh/liner v1.2.1
 	github.com/reugn/async v0.0.0-20200819063434-15e5b3951cd7
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/rs/xid v1.3.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
@@ -42,6 +48,7 @@ require (
 	github.com/ugorji/go v1.2.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0
 	github.com/vmihailenco/msgpack/v4 v4.3.12
+	github.com/xwb1989/sqlparser v0.0.0-20180606152119-120387863bf2
 	go.mongodb.org/mongo-driver v1.5.1
 	go.uber.org/atomic v1.6.0
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9

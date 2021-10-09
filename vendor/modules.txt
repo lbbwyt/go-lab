@@ -70,6 +70,9 @@ github.com/casbin/mongodb-adapter/v3
 github.com/cespare/xxhash/v2
 # github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58
 github.com/cloudflare/golz4
+# github.com/creack/pty v1.1.9
+## explicit
+github.com/creack/pty
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
 # github.com/deliveryhero/pipeline v0.3.1
@@ -150,6 +153,9 @@ github.com/go-redis/redis/v8/internal/pool
 github.com/go-redis/redis/v8/internal/proto
 github.com/go-redis/redis/v8/internal/rand
 github.com/go-redis/redis/v8/internal/util
+# github.com/go-sql-driver/mysql v1.6.0
+## explicit
+github.com/go-sql-driver/mysql
 # github.com/go-stack/stack v1.8.0
 github.com/go-stack/stack
 # github.com/gogo/protobuf v1.3.2
@@ -258,6 +264,12 @@ github.com/klauspost/compress/huff0
 github.com/klauspost/compress/snappy
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
+# github.com/knz/go-libedit v1.10.1
+## explicit
+github.com/knz/go-libedit
+github.com/knz/go-libedit/common
+github.com/knz/go-libedit/other
+github.com/knz/go-libedit/unix
 # github.com/leodido/go-urn v1.2.1
 ## explicit
 github.com/leodido/go-urn
@@ -271,6 +283,9 @@ github.com/mailru/easyjson/jwriter
 github.com/marusama/cyclicbarrier
 # github.com/mattn/go-isatty v0.0.12
 github.com/mattn/go-isatty
+# github.com/mattn/go-runewidth v0.0.9
+## explicit
+github.com/mattn/go-runewidth
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.1
@@ -283,6 +298,9 @@ github.com/opentrx/mysql
 github.com/opentrx/mysql/schema
 # github.com/patrickmn/go-cache v2.1.0+incompatible
 github.com/patrickmn/go-cache
+# github.com/peterh/liner v1.2.1
+## explicit
+github.com/peterh/liner
 # github.com/pierrec/lz4 v2.6.0+incompatible
 github.com/pierrec/lz4
 github.com/pierrec/lz4/internal/xxh32
@@ -316,6 +334,9 @@ github.com/reugn/async/internal
 github.com/richardlehane/mscfb
 # github.com/richardlehane/msoleps v1.0.1
 github.com/richardlehane/msoleps/types
+# github.com/robfig/cron/v3 v3.0.1
+## explicit
+github.com/robfig/cron/v3
 # github.com/rs/xid v1.3.0
 ## explicit
 github.com/rs/xid
@@ -386,6 +407,13 @@ github.com/xdg-go/scram
 github.com/xdg-go/stringprep
 # github.com/xuri/efp v0.0.0-20210322160811-ab561f5b45e3
 github.com/xuri/efp
+# github.com/xwb1989/sqlparser v0.0.0-20180606152119-120387863bf2
+## explicit
+github.com/xwb1989/sqlparser
+github.com/xwb1989/sqlparser/dependency/bytes2
+github.com/xwb1989/sqlparser/dependency/hack
+github.com/xwb1989/sqlparser/dependency/querypb
+github.com/xwb1989/sqlparser/dependency/sqltypes
 # github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d
 github.com/youmark/pkcs8
 # go.mongodb.org/mongo-driver v1.5.1

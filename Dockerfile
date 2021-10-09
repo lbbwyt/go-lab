@@ -1,8 +1,8 @@
-FROM golang:alpine
+FROM golang:1.15.5 as builder
 
 # 为我们的镜像设置必要的环境变量
 ENV GO111MODULE=on \
-    CGO_ENABLED=0 \
+    CGO_ENABLED=1 \
     GOOS=linux \
     GOARCH=amd64
 
@@ -13,13 +13,14 @@ WORKDIR /build
 COPY . .
 
 # 将我们的代码编译成二进制可执行文件app
-RUN go build -mod=vendor -o gin_web app/go_web/go_gin/cmd/gin_swagger/main.go
+#RUN go build -mod=vendor -o gin_web app/go_web/go_gin/cmd/gin_swagger/main.go
+RUN go build -mod=vendor -o go_libedit app/go-libedit/main.go
 
 # 移动到用于存放生成的二进制文件的 /dist 目录
 WORKDIR /dist
 
 # 将二进制文件从 /build 目录复制到这里
-RUN cp /build/gin_web .
+RUN cp /build/go_libedit .
 # 将配置文件拷贝的 /dist/etc目录下
 RUN mkdir -p  etc
 RUN cp /build/app/go_web/go_gin/etc/config.yaml ./etc/config.yaml
@@ -27,7 +28,13 @@ RUN cp /build/app/go_web/go_gin/etc/config.yaml ./etc/config.yaml
 EXPOSE 8888
 
 # 启动容器时运行的命令
-CMD ["/dist/gin_web"]
+CMD ["/dist/go_libedit"]
+
+#搭建本地镜像仓库
+#运行下面命令获取registry镜像，
+#$ docker pull registry:2.1.1
+#然后启动一个容器，
+#$ docker run -d -v /opt/registry:/var/lib/registry -p 5000:5000 --restart=always --name registry registry:2.1.1
 
 
 #构建，启动，进入容器

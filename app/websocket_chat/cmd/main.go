@@ -19,7 +19,7 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	http.ServeFile(w, r, "home.html")
+	http.ServeFile(w, r, "/Users/mac/libaobao/github/private/go-lab/app/websocket_chat/frontend/home.html")
 }
 
 func main() {
