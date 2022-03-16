@@ -37,8 +37,8 @@ func init() {
 	//flag.StringVar(&sourceUserName, "su", "admin", "")
 	//flag.StringVar(&sourcePassword, "sp", "admin", "")
 
-	//flag.StringVar(&proxyTargetAddr, "t", fmt.Sprintf("tcp://%s:%d", "172.16.101.74", 8022), "")
-	flag.StringVar(&proxyTargetAddr, "t", fmt.Sprintf("tcp://%s:%d", "127.0.0.1", 1883), "")
+	flag.StringVar(&proxyTargetAddr, "t", fmt.Sprintf("tcp://%s:%d", "172.16.101.74", 8022), "")
+	//flag.StringVar(&proxyTargetAddr, "t", fmt.Sprintf("tcp://%s:%d", "127.0.0.1", 1883), "")
 	flag.StringVar(&targetUserName, "tu", "admin", "")
 	flag.StringVar(&targetPassword, "tp", "admin", "")
 	flag.Parse()
@@ -101,15 +101,15 @@ func main() {
 
 	go proxyMsg()
 
-	go monitor(client)
+	go monitor(client, 5*time.Second)
 
 	select {}
 }
 
 //监控短信处理
-func monitor(client mqtt.Client) {
+func monitor(client mqtt.Client, d time.Duration) {
 
-	tick := time.NewTicker(5 * time.Second)
+	tick := time.NewTicker(d)
 	for {
 		select {
 		case <-tick.C:
@@ -179,6 +179,8 @@ func proxyMsg() error {
 		log.Error("目的borker 连接失败")
 		return token.Error()
 	}
+
+	go monitor(client, 10*time.Second)
 
 	for {
 		select {
