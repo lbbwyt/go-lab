@@ -89,8 +89,9 @@ func main() {
 	if err != nil || client == nil {
 		log.Info("失败重连...！")
 		for {
-			err, _ := subscrible()
+			err, c := subscrible()
 			if err == nil {
+				client = c
 				break
 			}
 			time.Sleep(10 * time.Second)
