@@ -32,15 +32,20 @@ func init() {
 	flag.StringVar(&proxySourceAddr, "s", fmt.Sprintf("wss://%s:%d/mqtt", "wss8084.megahealth.cn", 443), "")
 	flag.StringVar(&sourceUserName, "su", "user_zhbl02", "")
 	flag.StringVar(&sourcePassword, "sp", "123456", "")
-	flag.StringVar(&proxyTargetAddr, "t", fmt.Sprintf("tcp://%s:%d", "172.16.101.74", 8022), "")
-	//flag.StringVar(&proxyTargetAddr, "t", fmt.Sprintf("tcp://%s:%d", "127.0.0.1", 1883), "")
+
+	//flag.StringVar(&proxySourceAddr, "s", fmt.Sprintf("tcp://%s:%d", "127.0.0.1", 1883), "")
+	//flag.StringVar(&sourceUserName, "su", "admin", "")
+	//flag.StringVar(&sourcePassword, "sp", "admin", "")
+
+	//flag.StringVar(&proxyTargetAddr, "t", fmt.Sprintf("tcp://%s:%d", "172.16.101.74", 8022), "")
+	flag.StringVar(&proxyTargetAddr, "t", fmt.Sprintf("tcp://%s:%d", "127.0.0.1", 1883), "")
 	flag.StringVar(&targetUserName, "tu", "admin", "")
 	flag.StringVar(&targetPassword, "tp", "admin", "")
 	flag.Parse()
 }
 
 var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
+	log.Info("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
 	mqttMessage := MqttMsg{
 		topic:   msg.Topic(),
 		payload: msg.Payload(),
@@ -51,22 +56,22 @@ var messagePubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Me
 }
 
 var messageTargetPubHandler mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
-	fmt.Printf("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
+	log.Info("Received message: %s from topic: %s\n", msg.Payload(), msg.Topic())
 
 }
 
 var connectSourceHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
-	fmt.Println("Source Connected")
+	log.Info("Source Connected")
 }
 
 var connectTargetHandler mqtt.OnConnectHandler = func(client mqtt.Client) {
-	fmt.Println("Target Connected")
+	log.Info("Target Connected")
 }
 
 var connectSourceLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err error) {
-	fmt.Printf("Source Connect lost: %v", err)
+	log.Info("Source Connect lost: %v at %s", err, time.Now().Format("2006-01-02 15:04:05 MST Mon"))
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		fmt.Printf("reconnect error: %v", err)
+		log.Error("reconnect error: %v", err)
 	}
 }
 
@@ -79,6 +84,50 @@ var connectLostHandler mqtt.ConnectionLostHandler = func(client mqtt.Client, err
 }
 
 func main() {
+
+	err, client := subscrible()
+	if err != nil || client == nil {
+		log.Info("失败重连...！")
+		for {
+			err, _ := subscrible()
+			if err == nil {
+				break
+			}
+			time.Sleep(10 * time.Second)
+		}
+		log.Info("重连成功！")
+	}
+
+	go proxyMsg()
+
+	go monitor(client)
+
+	select {}
+}
+
+//监控短信处理
+func monitor(client mqtt.Client) {
+
+	tick := time.NewTicker(5 * time.Second)
+	for {
+		select {
+		case <-tick.C:
+			sourceMonitor(client)
+		}
+	}
+
+}
+
+func sourceMonitor(client mqtt.Client) {
+	if !client.IsConnected() {
+		log.Info("监控到掉线重连")
+		client.Connect()
+	}
+
+}
+
+func subscrible() (error, mqtt.Client) {
+
 	log.Info(fmt.Sprintf("proxy form %s to %s at %s", proxySourceAddr, proxyTargetAddr, time.Now().Format("2006-01-02 15:04:05 MST Mon")))
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(proxySourceAddr)
@@ -89,13 +138,14 @@ func main() {
 	opts.SetDefaultPublishHandler(messagePubHandler)
 	opts.OnConnect = connectSourceHandler
 	opts.OnConnectionLost = connectLostHandler
-	//opts.SetCleanSession(true)
+	opts.SetCleanSession(true)
 	opts.SetKeepAlive(30 * time.Second)
-	opts.SetAutoReconnect(true)
+	//opts.SetAutoReconnect(true)
 	opts.SetConnectionLostHandler(connectSourceLostHandler)
 	client := mqtt.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		panic(token.Error())
+		log.Error("connect error:" + token.Error().Error())
+		return token.Error(), nil
 	}
 
 	topics := []string{
@@ -108,12 +158,10 @@ func main() {
 	for _, v := range topics {
 		go client.Subscribe(v, 1, nil)
 	}
-
-	go proxyMsg()
-	select {}
+	return nil, client
 }
 
-func proxyMsg() {
+func proxyMsg() error {
 	opts := mqtt.NewClientOptions()
 	opts.AddBroker(proxyTargetAddr)
 	opts.SetClientID("J01MT05B2112000126")
@@ -127,7 +175,8 @@ func proxyMsg() {
 	opts.AutoReconnect = true
 	client := mqtt.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		panic(token.Error())
+		log.Error("目的borker 连接失败")
+		return token.Error()
 	}
 
 	for {
