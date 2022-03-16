@@ -88,6 +88,10 @@ github.com/eapache/go-resiliency/breaker
 github.com/eapache/go-xerial-snappy
 # github.com/eapache/queue v1.1.0
 github.com/eapache/queue
+# github.com/eclipse/paho.mqtt.golang v1.3.5
+## explicit
+github.com/eclipse/paho.mqtt.golang
+github.com/eclipse/paho.mqtt.golang/packets
 # github.com/gin-contrib/pprof v1.3.0
 ## explicit
 github.com/gin-contrib/pprof
