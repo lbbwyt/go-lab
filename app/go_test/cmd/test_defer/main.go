@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"sync"
 )
 
@@ -11,13 +12,15 @@ var (
 )
 
 func main() {
-	for i := 0; i < 10; i++ {
-		go func(i int) {
-			mutex.Lock()
-			defer mutex.Unlock()
-			sum = sum + i
-			fmt.Println(fmt.Sprintf("%d, %d", i, sum))
-		}(i)
+	// 示例字符串
+	str := "12345"
+
+	// 转换（10 进制, 64 位）
+	num, err := strconv.ParseInt(str, 10, 64)
+	if err != nil {
+		// 处理错误（如非数字、溢出等）
+		panic(err)
 	}
-	select {}
+	// num 现在是 int64 类型
+	fmt.Printf("%d, %T", num, num) // 输出: 12345, int64
 }
