@@ -38,7 +38,7 @@ type ClickHouse struct {
 type Config struct {
 	MongoDbConfigs struct {
 		DB MongoDb `yaml:"test_db"`
-	} `yaml:"mongodb"`
+	} `yaml:"mongo_client"`
 	WebServer     Web        `yaml:"web"`
 	Kafka         Kafka      `yaml:"kafka"`
 	Logger        Logger     `yaml:"logger"`

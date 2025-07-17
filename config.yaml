@@ -1,10 +1,11 @@
 mongodb:
   test_db:
-    addr: localhost:27017,localhost:27027,localhost:27037
+    addr: mongodb://localhost:27017
     user:
     password:
     rs: rs0
-    db:
+    db: multimodal_db
+    table: physiological_signals_libaobao
 web:
   port: 8888
 rpc:

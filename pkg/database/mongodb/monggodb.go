@@ -10,8 +10,8 @@ import (
 	"sync"
 )
 
-const connStringFmtWithoutPwd = "mongodb://%s/?replicaSet=%s"    // 没有密码时用的连接字符串
-const connStringFmtWithPwd = "mongodb://%s:%s@%s/?replicaSet=%s" // 有密码时用的连接字符串
+const connStringFmtWithoutPwd = "mongo_client://%s/?replicaSet=%s"    // 没有密码时用的连接字符串
+const connStringFmtWithPwd = "mongo_client://%s:%s@%s/?replicaSet=%s" // 有密码时用的连接字符串
 
 var once sync.Once // 保证全局只有1个mongodb client
 var mongodbClient *mongo.Client
@@ -36,7 +36,7 @@ func encapsulateBuildClientFunc(config *conf.MongoDb) func() {
 		if err != nil {
 			log.WithFields(log.Fields{"user": config.User, "addr": config.Addr, "rs": config.Rs}).
 				WithError(err).
-				Error("mongodb client init error")
+				Error("mongo_client client init error")
 			mongodbClientInitErr = err
 			return
 		}
@@ -46,13 +46,13 @@ func encapsulateBuildClientFunc(config *conf.MongoDb) func() {
 		if err != nil {
 			log.WithFields(log.Fields{"user": config.User, "addr": config.Addr, "rs": config.Rs}).
 				WithError(err).
-				Error("mongodb connection ping error")
+				Error("mongo_client connection ping error")
 			mongodbClientInitErr = err
 			return
 		}
 
 		log.WithFields(log.Fields{"user": config.User, "addr": config.Addr, "rs": config.Rs}).
-			Info("mongodb client init succeed")
+			Info("mongo_client client init succeed")
 		mongodbClient = client
 	}
 }

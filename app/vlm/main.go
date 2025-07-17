@@ -8,12 +8,14 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"go-lab/app/vlm/conf"
+	"go-lab/app/vlm/db"
+	"go-lab/pkg/client/mongo_client"
 	"go-lab/pkg/client/websocket"
 	"go-lab/pkg/utils"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -66,21 +68,52 @@ func main() {
 	var (
 		imgInChan  = make(chan *utils.File, 1024*10)
 		imgOutChan = make(chan *RevData, 1024)
-		mp         = make(map[int64]interface{})
+		//mp         = make(map[int64]interface{})
+		mp sync.Map
 	)
 	getImage(imgInChan)
 
 	go doImg2Label(imgInChan, imgOutChan)
 	go dealVLmLabel(imgOutChan, mp)
 
-	for {
-		if conf.GConfig.Out >= conf.GConfig.In {
-			log.Infof("[main] Done : %d, ！！！", conf.GConfig.Out)
+	go writeDB(mp)
 
-		}
-		time.Sleep(5 * time.Second)
+	for {
+		log.Infof("*********************************************************************************")
+		log.Infof("[main] vlm Done : 【%d / %d】, ！！！", conf.GConfig.Out, conf.GConfig.In)
+		log.Infof("[main] write DB count : 【%d 】, ！！！", conf.GConfig.WriteDBCount)
+		log.Infof("*********************************************************************************")
+		time.Sleep(60 * time.Second)
 	}
 
+}
+
+func writeDB(mp sync.Map) {
+
+	c, err := mongo_client.NewMongoDBClient(conf.GConfig.MongoDbConfigs.DB.Addr, conf.GConfig.MongoDbConfigs.DB.Db, conf.GConfig.MongoDbConfigs.DB.Table)
+	if err != nil {
+		log.WithFields(log.Fields{"Table": conf.GConfig.MongoDbConfigs.DB.Table}).WithError(err).Error("[main] MongoDB init error")
+		return
+	}
+	d := db.NewMultiModelDataDao(c)
+
+	mp.Range(func(key, value interface{}) bool {
+		ar := value.([]*RevData)
+		tmp := key.(int64)
+		if len(ar) == 3 {
+			ars, _ := json.Marshal(ar)
+
+			count, err := d.UpdateLabel(tmp, string(ars))
+			if err != nil {
+				log.WithFields(log.Fields{"Table": conf.GConfig.MongoDbConfigs.DB.Table}).WithError(err).Error("[main] MongoDB init error")
+				return false
+			}
+			atomic.AddInt32(&conf.GConfig.WriteDBCount, int32(count))
+		}
+
+		return true
+
+	})
 }
 
 func getImage(imgInChan chan *utils.File) {
@@ -101,7 +134,7 @@ func getImage(imgInChan chan *utils.File) {
 	}
 
 	inputLength := len(imgInChan)
-	conf.GConfig.In = atomic.AddInt32(&conf.GConfig.In, int32(inputLength))
+	atomic.AddInt32(&conf.GConfig.In, int32(inputLength))
 
 	fmt.Println(fmt.Printf("At：%s , 待处理图片共 【%d】张图片", time.Now().Format("2006-01-02 15:04:05"), conf.GConfig.In))
 
@@ -120,25 +153,20 @@ func doImg2Label(imgInChan chan *utils.File, imgOutChan chan *RevData) {
 *
 标签处理
 */
-func dealVLmLabel(labels chan *RevData, mp map[int64]interface{}) {
+func dealVLmLabel(labels chan *RevData, mp sync.Map) {
 
 	for {
 		select {
 		case l := <-labels:
-
-			atomic.AddInt32(&conf.GConfig.Out, 1)
-
-			if value, okk := mp[l.Tmp]; okk {
+			if value, okk := mp.Load(l.Tmp); okk {
 				if arr, ok := value.([]*RevData); ok {
 					arr = append(arr, l)
 				}
 			} else {
 				arr := make([]*RevData, 5)
 				arr = append(arr, l)
-				mp[l.Tmp] = arr
-
+				mp.Store(l.Tmp, arr)
 			}
-
 		}
 	}
 
@@ -200,6 +228,7 @@ func (c *C) Run() {
 				continue
 			}
 			c.OutputChan <- rv
+			atomic.AddInt32(&conf.GConfig.Out, int32(1))
 			sinChan <- 1
 
 			log.Printf("Received: %s At %s", rv.DeviceId, time.Now().Format("2006-01-02 15:04:05"))
@@ -237,12 +266,12 @@ func testDir() {
 	if err != nil {
 		log.Fatalf("获取工作目录失败: %v", err)
 	}
-	fmt.Printf("⚠️ 程序工作目录: %s\n", wd)
+	fmt.Printf("程序工作目录: %s\n", wd)
 
 	// 测试路径解析
 	testPath := "./config.yaml"
 	absPath, _ := filepath.Abs(testPath)
-	fmt.Printf("⚠️ 试图加载的绝对路径: %s\n", absPath)
+	fmt.Printf("试图加载的绝对路径: %s\n", absPath)
 }
 
 /*
@@ -262,11 +291,16 @@ func ReadImgDir(dirPath string, dataChan chan *utils.File, fileType string) erro
 			info := strings.Split(entry.Name(), ".")
 			devAndTmp := strings.Split(info[0], "_")
 			fullPath := filepath.Join(dirPath, entry.Name())
-			// 转换（10 进制, 64 位）
-			num, err := strconv.ParseInt(devAndTmp[1], 10, 64)
+
+			// 解析为时间对象
+			t, err := time.Parse("20060102150405", devAndTmp[1])
 			if err != nil {
-				return err
+				log.WithFields(log.Fields{"devAndTmp": devAndTmp[1]}).WithError(err).Error("[main] Parse time error")
+				continue
 			}
+
+			// 转换（10 进制, 64 位）
+			num := t.Unix()
 
 			if num%conf.GConfig.Interval != 0 {
 				continue

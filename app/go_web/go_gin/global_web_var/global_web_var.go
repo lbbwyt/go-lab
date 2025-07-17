@@ -9,7 +9,7 @@ import (
 )
 
 type WebVars struct {
-	MongoClient   *mongo.Client   // mongodb client
+	MongoClient   *mongo.Client   // mongo_client client
 	MongoDb       *mongo.Database // mongodb的database
 	StatisticCKDb *sqlx.DB        //statistic 数据库客户端
 }
@@ -18,7 +18,7 @@ var GWebVars WebVars
 
 // 初始化全局变量
 func Init() error {
-	// mongodb
+	// mongo_client
 	MongoDbConfig := conf.GConfig.MongoDbConfigs.DB
 	mongodbClient, err := database.GetMongodbClient(&MongoDbConfig)
 	if err != nil {

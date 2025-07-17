@@ -15,8 +15,8 @@ var casbinEnforcer *casbin.SyncedEnforcer
 
 var casbinEnforcerInitErr error
 
-const connStringFmtWithoutPwd = "mongodb://%s/%s?authSource=admin&replicaSet=%s"    // 没有密码时用的连接字符串
-const connStringFmtWithPwd = "mongodb://%s:%s@%s/%s?authSource=admin&replicaSet=%s" // 有密码时用的连接字符串
+const connStringFmtWithoutPwd = "mongo_client://%s/%s?authSource=admin&replicaSet=%s"    // 没有密码时用的连接字符串
+const connStringFmtWithPwd = "mongo_client://%s:%s@%s/%s?authSource=admin&replicaSet=%s" // 有密码时用的连接字符串
 
 // casbin Enforcer(单例)
 func GetCabinEnforcer() *casbin.SyncedEnforcer {
