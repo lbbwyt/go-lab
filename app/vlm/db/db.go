@@ -15,7 +15,8 @@ func NewMultiModelDataDao(d *mongo_client.MongoDBClient) *MultiModelDataDao {
 }
 
 func (d *MultiModelDataDao) FindOneByTmp(tmp int64) (*model.MultiModelData, error) {
-	filter := bson.M{"timestep": tmp}
+
+	filter := bson.M{"timestep": bson.M{"$lt": (tmp + 1) * 1000, "$gte": tmp * 1000}}
 	m := &model.MultiModelData{}
 	err := d.db.FindOne(filter, m)
 	if err != nil {

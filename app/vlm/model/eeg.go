@@ -6,7 +6,7 @@ import (
 
 type MultiModelData struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty"`
-	TimeStep     string             `bson:"timestep"`
+	TimeStep     int64              `bson:"timestep"`
 	DeviceInfoId string             `bson:"device_info_id"`
 	EegChannel1  float64            `bson:"eeg_channel1"`
 	EegChannel2  float64            `bson:"eeg_channel2"`

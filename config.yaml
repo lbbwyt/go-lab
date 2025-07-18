@@ -22,7 +22,7 @@ click_house:
   password:
   db:
 
-image_path: D:\EEG\sub03-pangrichong-250709\cam\test\lbb
-ws_addr: ws://172.19.202.20:18765/ws
+image_path: D:\EEG\test\physiological_signals_libaobao
+ws_addr: ws://172.19.202.20:18765
 client_num: 5  #最大设置5个
-interval: 10
+interval: 30
