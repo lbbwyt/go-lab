@@ -16,7 +16,7 @@ func NewMultiModelDataDao(d *mongo_client.MongoDBClient) *MultiModelDataDao {
 
 func (d *MultiModelDataDao) FindOneByTmp(tmp int64) (*model.MultiModelData, error) {
 
-	filter := bson.M{"timestep": bson.M{"$lt": (tmp + 1) * 1000, "$gte": tmp * 1000}}
+	filter := bson.M{"timestep": tmp}
 	m := &model.MultiModelData{}
 	err := d.db.FindOne(filter, m)
 	if err != nil {
@@ -26,7 +26,9 @@ func (d *MultiModelDataDao) FindOneByTmp(tmp int64) (*model.MultiModelData, erro
 }
 
 func (d *MultiModelDataDao) UpdateLabel(tmp int64, labels string) (int64, error) {
-	filter := bson.M{"timestep": tmp}
+
+	filter := bson.M{"timestep": bson.M{"$lt": (tmp + 1) * 1000, "$gte": tmp * 1000}}
+	//filter := bson.M{"timestep": tmp * 1000}
 	update := bson.M{"$set": bson.M{"label": labels}}
 	return d.db.UpdateMany(filter, update)
 }

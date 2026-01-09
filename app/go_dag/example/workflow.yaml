@@ -1,0 +1,17 @@
+# workflow.yaml
+id:   demo
+name: 用户注册
+tasks:
+  - id: validate
+    action: validateUser
+    deps: []
+    timeout: 5
+  - id: saveUser
+    action: saveUser
+    deps: [validate]
+    timeout: 10
+  - id: sendEmail
+    action: sendEmail
+    deps: [saveUser]
+    timeout: 3
+    retry: 2

@@ -21,11 +21,12 @@ type Config struct {
 	ImagePath string `yaml:"image_path"`
 	WsAddr    string `yaml:"ws_addr""`
 
-	In           int32
-	Out          int32
-	WriteDBCount int32
-	ClientNum    int   `yaml:"client_num"`
-	Interval     int64 `yaml:"interval"`
+	In                 int32
+	Out                int32
+	WriteDBCount       int32
+	UpdateSuccessCount int32
+	ClientNum          int   `yaml:"client_num"`
+	Interval           int64 `yaml:"interval"`
 }
 
 var GConfig *Config

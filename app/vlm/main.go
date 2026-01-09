@@ -65,31 +65,6 @@ func main() {
 	}
 	log.Infof("[main] image path : %s", conf.GConfig.ImagePath)
 
-	var (
-		imgInChan  = make(chan *utils.File, 1024*10)
-		imgOutChan = make(chan *RevData, 1024)
-		//mp         = make(map[int64]interface{})
-		mp sync.Map
-	)
-	getImage(imgInChan)
-
-	go doImg2Label(imgInChan, imgOutChan)
-	go dealVLmLabel(imgOutChan, mp)
-
-	go writeDB(mp)
-
-	for {
-		log.Infof("*********************************************************************************")
-		log.Infof("[main] vlm Done : 【%d / %d】, ！！！", conf.GConfig.Out, conf.GConfig.In)
-		log.Infof("[main] write DB count : 【%d 】, ！！！", conf.GConfig.WriteDBCount)
-		log.Infof("*********************************************************************************")
-		time.Sleep(60 * time.Second)
-	}
-
-}
-
-func writeDB(mp sync.Map) {
-
 	c, err := mongo_client.NewMongoDBClient(conf.GConfig.MongoDbConfigs.DB.Addr, conf.GConfig.MongoDbConfigs.DB.Db, conf.GConfig.MongoDbConfigs.DB.Table)
 	if err != nil {
 		log.WithFields(log.Fields{"Table": conf.GConfig.MongoDbConfigs.DB.Table}).WithError(err).Error("[main] MongoDB init error")
@@ -97,24 +72,96 @@ func writeDB(mp sync.Map) {
 	}
 	d := db.NewMultiModelDataDao(c)
 
-	mp.Range(func(key, value interface{}) bool {
-		ar := value.([]*RevData)
-		tmp := key.(int64)
-		if len(ar) == 3 {
-			ars, _ := json.Marshal(ar)
+	var (
+		imgInChan  = make(chan *utils.File, 1024*10)
+		imgOutChan = make(chan *RevData, 1024)
+		//mp         = make(map[int64]interface{})
+		mp sync.Map
+	)
+	getImage(imgInChan)
+	go doImg2Label(imgInChan, imgOutChan)
 
-			count, err := d.UpdateLabel(tmp, string(ars))
-			if err != nil {
-				log.WithFields(log.Fields{"Table": conf.GConfig.MongoDbConfigs.DB.Table}).WithError(err).Error("[main] MongoDB init error")
-				return false
+	go printStatistic()
+
+	for {
+		select {
+		case l := <-imgOutChan:
+
+			if value, okk := mp.Load(l.Tmp); okk {
+				if arr, ok := value.([]*RevData); ok {
+					arr = append(arr, l)
+
+					mp.Store(l.Tmp, arr)
+
+					if len(arr) == 3 {
+						writeDB(d, l.Tmp, arr)
+					}
+
+				}
+			} else {
+				arr := make([]*RevData, 0)
+				arr = append(arr, l)
+				mp.Store(l.Tmp, arr)
 			}
-			atomic.AddInt32(&conf.GConfig.WriteDBCount, int32(count))
 		}
+	}
 
-		return true
-
-	})
 }
+
+func writeDB(d *db.MultiModelDataDao, tmp int64, arr []*RevData) error {
+	ars, err := json.Marshal(arr)
+	if err != nil {
+		log.WithError(err).Error("[main] Marshal init error")
+		return err
+	}
+	count, err := d.UpdateLabel(tmp, string(ars))
+	if err != nil {
+		log.WithFields(log.Fields{"Table": conf.GConfig.MongoDbConfigs.DB.Table}).WithError(err).Error("[main] MongoDB init error")
+		return err
+	}
+	atomic.AddInt32(&conf.GConfig.WriteDBCount, 1)
+	atomic.AddInt32(&conf.GConfig.UpdateSuccessCount, int32(count))
+	return nil
+}
+
+func printStatistic() {
+	for {
+		log.Infof("*********************************************************************************")
+		log.Infof("[main] vlm Done : 【%d / %d】, ！！！", conf.GConfig.Out, conf.GConfig.In)
+		log.Infof("[main] write DB count : 【%d 】, ！！！", conf.GConfig.WriteDBCount)
+		log.Infof("[main] update DB Success count : 【%d 】, ！！！", conf.GConfig.UpdateSuccessCount)
+		log.Infof("*********************************************************************************")
+		time.Sleep(60 * time.Second)
+	}
+}
+
+//func writeDB(mp sync.Map) {
+//
+//	c, err := mongo_client.NewMongoDBClient(conf.GConfig.MongoDbConfigs.DB.Addr, conf.GConfig.MongoDbConfigs.DB.Db, conf.GConfig.MongoDbConfigs.DB.Table)
+//	if err != nil {
+//		log.WithFields(log.Fields{"Table": conf.GConfig.MongoDbConfigs.DB.Table}).WithError(err).Error("[main] MongoDB init error")
+//		return
+//	}
+//	d := db.NewMultiModelDataDao(c)
+//
+//	mp.Range(func(key, value interface{}) bool {
+//		ar := value.([]*RevData)
+//		tmp := key.(int64)
+//		if len(ar) == 3 {
+//			ars, _ := json.Marshal(ar)
+//
+//			count, err := d.UpdateLabel(tmp, string(ars))
+//			if err != nil {
+//				log.WithFields(log.Fields{"Table": conf.GConfig.MongoDbConfigs.DB.Table}).WithError(err).Error("[main] MongoDB init error")
+//				return false
+//			}
+//			atomic.AddInt32(&conf.GConfig.WriteDBCount, int32(count))
+//		}
+//
+//		return true
+//
+//	})
+//}
 
 func getImage(imgInChan chan *utils.File) {
 	// 读取顶层目录下的文件和文件夹
@@ -136,7 +183,7 @@ func getImage(imgInChan chan *utils.File) {
 	inputLength := len(imgInChan)
 	atomic.AddInt32(&conf.GConfig.In, int32(inputLength))
 
-	fmt.Println(fmt.Printf("At：%s , 待处理图片共 【%d】张图片", time.Now().Format("2006-01-02 15:04:05"), conf.GConfig.In))
+	//fmt.Println(fmt.Printf("At：%s , 待处理图片共 【%d】张图片", time.Now().Format("2006-01-02 15:04:05"), conf.GConfig.In))
 
 }
 
@@ -145,29 +192,6 @@ func doImg2Label(imgInChan chan *utils.File, imgOutChan chan *RevData) {
 	for i := 0; i < conf.GConfig.ClientNum; i++ {
 		client := NewC(conf.GConfig.WsAddr, imgInChan, imgOutChan)
 		go client.Run()
-	}
-
-}
-
-/*
-*
-标签处理
-*/
-func dealVLmLabel(labels chan *RevData, mp sync.Map) {
-
-	for {
-		select {
-		case l := <-labels:
-			if value, okk := mp.Load(l.Tmp); okk {
-				if arr, ok := value.([]*RevData); ok {
-					arr = append(arr, l)
-				}
-			} else {
-				arr := make([]*RevData, 5)
-				arr = append(arr, l)
-				mp.Store(l.Tmp, arr)
-			}
-		}
 	}
 
 }
@@ -231,7 +255,7 @@ func (c *C) Run() {
 			atomic.AddInt32(&conf.GConfig.Out, int32(1))
 			sinChan <- 1
 
-			log.Printf("Received: %s At %s", rv.DeviceId, time.Now().Format("2006-01-02 15:04:05"))
+			log.Printf("Received: %d At %s", rv.Tmp, time.Now().Format("2006-01-02 15:04:05"))
 		case err := <-c.Ws.Errors():
 			log.Printf("Received Error: %v", err)
 		}
@@ -284,6 +308,9 @@ func ReadImgDir(dirPath string, dataChan chan *utils.File, fileType string) erro
 	if err != nil {
 		return err
 	}
+
+	loc, _ := time.LoadLocation("Asia/Shanghai") // 或使用系统本地时区：time.Local
+
 	// 遍历目录项
 	for _, entry := range entries {
 
@@ -293,7 +320,8 @@ func ReadImgDir(dirPath string, dataChan chan *utils.File, fileType string) erro
 			fullPath := filepath.Join(dirPath, entry.Name())
 
 			// 解析为时间对象
-			t, err := time.Parse("20060102150405", devAndTmp[1])
+			t, err := time.ParseInLocation("20060102150405", devAndTmp[1], loc)
+
 			if err != nil {
 				log.WithFields(log.Fields{"devAndTmp": devAndTmp[1]}).WithError(err).Error("[main] Parse time error")
 				continue

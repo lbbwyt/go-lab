@@ -4,8 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
-
+	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,24 +17,21 @@ type MongoDBClient struct {
 	database   *mongo.Database
 	collection *mongo.Collection
 	ctx        context.Context
-	cancel     context.CancelFunc
 }
 
 // NewMongoDBClient 创建新的MongoDB客户端
 func NewMongoDBClient(uri, dbName, collName string) (*MongoDBClient, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx := context.Background()
 
 	clientOptions := options.Client().ApplyURI(uri)
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		cancel()
 		return nil, fmt.Errorf("连接MongoDB失败: %v", err)
 	}
 
 	// 验证连接
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		cancel()
 		return nil, fmt.Errorf("验证MongoDB连接失败: %v", err)
 	}
 
@@ -47,15 +43,11 @@ func NewMongoDBClient(uri, dbName, collName string) (*MongoDBClient, error) {
 		database:   db,
 		collection: coll,
 		ctx:        ctx,
-		cancel:     cancel,
 	}, nil
 }
 
 // Close 关闭连接
 func (m *MongoDBClient) Close() error {
-	if m.cancel != nil {
-		m.cancel()
-	}
 	return m.client.Disconnect(m.ctx)
 }
 
@@ -135,6 +127,7 @@ func (m *MongoDBClient) UpdateOne(filter, update interface{}) (int64, error) {
 func (m *MongoDBClient) UpdateMany(filter, update interface{}) (int64, error) {
 	result, err := m.collection.UpdateMany(m.ctx, filter, update)
 	if err != nil {
+		log.WithFields(log.Fields{"filter": filter}).Error("[MongoDBClient] UpdateLabel error")
 		return 0, fmt.Errorf("批量更新文档失败: %v", err)
 	}
 	return result.ModifiedCount, nil
